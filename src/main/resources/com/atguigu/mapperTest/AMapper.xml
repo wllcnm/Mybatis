@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.atguigu.mapperTest.AMapper">
+
+    <resultMap id="getAllAMap" type="A">
+        <id column="a_id" property="aId"/>
+        <result column="a_name" property="aName"/>
+        <association property="b" javaType="B"
+                     select="com.atguigu.mapperTest.BMapper.getAllB"
+                     column="b_id"
+        />
+
+    </resultMap>
+
+
+    <select id="getAllA" resultMap="getAllAMap">
+        select  * from a where a_id=#{id}
+    </select>
+</mapper>

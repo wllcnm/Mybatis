@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.atguigu.mapper.EmpMapper">
+
+<resultMap id="empResultMap" type="Emp">
+    <id column="emp_id" property="empId"/>
+    <result column="emp_name" property="empName"/>
+    <result column="age" property="age"/>
+    <result column="gender" property="gender"/>
+</resultMap>
+
+    <select id="getEmpByEmpId" resultMap="empResultMap">
+     select * from t_emp where emp_id=#{id}
+    </select>
+
+
+    <!--第一种:级联方式 参为 column为数据库中的字段名,property为pojo中的属性名-->
+    <resultMap id="empAndDeptResultMapOne" type="Emp">
+        <id column="emp_id" property="empId"/>
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+        <result column="dept_id" property="dept.deptId"/>
+        <result column="dept_name" property="dept.deptName"/>
+    </resultMap>
+
+    <!--第二种:association方式 标签参数为property为实体类的属性名,javaType为实体类的属性 -->
+    <resultMap id="empAndDeptResultMapTwo" type="Emp">
+        <id column="emp_id" property="empId"/>
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+       <association property="dept" javaType="Dept">
+           <id column="dept_id" property="deptId"/>
+           <result column="dept_name" property="deptName"/>
+       </association>
+    </resultMap>
+
+    <!--第三种:分布查询-->
+    <resultMap id="empAndDeptResultMapThree" type="Emp">
+        <id column="emp_id" property="empId"/>
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+        <association property="dept" select="com.atguigu.mapper.DeptMapper.getDeptByStep"
+                     column="dept_id"
+                     fetchType="eager"
+        />
+
+    </resultMap>
+
+
+    <select id="getEmpAndDept" resultMap="empAndDeptResultMapTwo">
+        SELECT t_dep.*,t_emp.* from t_emp LEFT JOIN t_dep on t_dep.dept_id=t_emp.dept_id WHERE t_dep.dept_id=#{id};
+    </select>
+
+    <select id="getEmpAndDeptByStep" resultMap="empAndDeptResultMapThree">
+        select * from t_emp where emp_id=#{id}
+    </select>
+    <select id="getDeptAndEmpByStep2" resultType="com.atguigu.pojo.Emp">
+        select * from t_emp where dept_id=#{DeptId}
+    </select>
+    <select id="getAllEmpMap" resultType="java.util.Map">
+        select * from  t_emp
+    </select>
+    <select id="getAllEmpList" resultType="com.atguigu.pojo.Emp">
+        select * from t_emp
+    </select>
+
+
+</mapper>

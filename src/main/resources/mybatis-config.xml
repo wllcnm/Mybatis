@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+<!--    配置连接数据库额环境-->
+
+    <properties resource="jdbc.properties"/>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!--lazyLoadingEnabled表示延迟加载的开关,true表示同意开启,false表示不同意 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+
+        <!--aggressiveLazyLoading表示是否允许有延迟加载,true表示不同意,false表示同意 -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+    
+    <typeAliases>
+        <package name="com.atguigu.pojo"/>
+        <package name="com.atguigu.pojoTest"/>
+        <package name="com.TestEasyCode.entity"/>
+    </typeAliases>
+
+
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC">
+                <property name="..." value="..."/>
+            </transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+
+<!--        <mapper resource="mappers/UserMapper.xml"/>-->
+
+        <package name="com.atguigu.mapper"/>
+        <package name="com.atguigu.mapperTest"/>
+        <package name="com.TestEasyCode.dao"/>
+    </mappers>
+
+
+</configuration>
